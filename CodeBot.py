@@ -56,7 +56,7 @@ def build_graph():
 
     return graph.compile(checkpointer=checkpointer)
 
-@app.route("/codeanalyse",methods=["POST"])
+
 def code_analyser():
     
     print("If you have a code for me then please write END at the end: ")
@@ -70,25 +70,24 @@ def code_analyser():
     
     return "\n".join(lines)
 
-
-def main():
+@app.route("/codeanalyse",methods=["POST"])
+def Builder():
     chatbot = build_graph()
-    thread_id = "user-2"   
-
-    print("Welcome to CyberShield AI, How can i Help You?")
-
-    while True:
-        user_input = code_analyser()
-        if user_input.lower() in ["exit", "bye"]:
-            break
-        
-        result = chatbot.invoke(
-            {"messages": [HumanMessage(content=user_input)]},
-            config={"configurable": {"thread_id": thread_id}},
-        )
-
-        print("Bot:", result["messages"][-1].content)
-
+    
+    data = request.get_json()
+    query = data.get("query")
+    thread_id = data.get("user_id")   
+    
+    if not query or not thread_id:
+        return jsonify({"error":"no querry or user_id detected"})
+    
+    result = chatbot.invoke(
+        {"messages":[HumanMessage(content=query)]},
+        config={"configurable":{"thread_id":thread_id}}
+    )
+    
+    response = result["messages"][-1].content
+    return jsonify({"response":response})
 
 if __name__ == "__main__":
     app.run(host="localhost",port=3000)
