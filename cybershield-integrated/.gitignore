@@ -10,3 +10,7 @@ BetterRag.db
 *.log
 .DS_Store
 Thumbs.db
+*.db-shm
+*.db-wal
+*.pkl
+python_bots/faiss_indexes/
