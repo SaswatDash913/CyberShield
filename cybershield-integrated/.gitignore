@@ -1,0 +1,12 @@
+.env
+node_modules/
+uploads/
+__pycache__/
+*.pyc
+*.pyo
+faiss_index/
+CyberShield.db
+BetterRag.db
+*.log
+.DS_Store
+Thumbs.db
